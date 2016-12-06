@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +23,7 @@
 
 <body data-spy="scroll" data-target="#navbar-example">
 
-  <nav id="navbar-example" class="navbar navbar-light bg-faded navbar-fixed-top ">
+  <nav id="navbar-example" class="navbar bg-faded navbar-fixed-top ">
     <div class="container">
       <ul class="nav nav-pills">
         <li class="nav-item">
@@ -41,7 +42,10 @@
     </div>
   </nav>
 
-  <div id="home"></div>
+  <div id="home">
+        <!--<img src="images/01.jpg">-->
+
+  </div>
   <!-- Carousel
     ================================================== -->
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -60,21 +64,9 @@
             </p>
           </div>
         </div>
-      <div class="carousel-item active">
-        <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
-        <div class="container">
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
-        <div class="container">
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
-        <div class="container">
-        </div>
-      </div>
+      <img class="carousel-item active first-slide" src="images/01.jpg" alt="Look at us, we look amazing!">
+      <img class="carousel-item second-slide" src="images/02.jpg" alt="Could you imagine a cuter couple?">
+      <img class="carousel-item third-slide" src="images/03.jpg" alt="I really hope nobody is reading these!">
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -100,13 +92,27 @@
     <hr class="featurette-divider">
 
     <div id="about" class="row featurette">
-      <div class="col-md-7">
-        <h2 class="featurette-heading">About Us. <span class="text-muted">We're pretty awesome.</span></h2>
-        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo
-          cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-      </div>
-      <div class="col-md-5">
-        <img class="featurette-image img-fluid m-x-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+      <div class="col-md-12">
+        <h2 class="featurette-heading">About Us</h2>
+        <p class="lead">
+          Paige and Joe met through mutual friends during their freshman year at the University 
+          of Illinois. Joe was impressed that Paige was taking 20 hours of classes. Paige thought Joe was weird 
+          and nerdy. They started hanging out more, and Joe worked up the courage to ask Paige out. Paige 
+          planned on saying no, but instead realized that she actually liked Joe quite a bit. They stated 
+          dating on October 11, 2009.
+        </p>
+        <p class="lead">
+          Paige finished her degree in chemistry, and started graduate school at the University of Michigan. 
+          Joe finished his degree in computer science, and stayed to get a master's degree at Illinois. He then 
+          moved to Ann Arbor to join Paige, where he now works as a software developer. Paige plans to complete 
+          her Ph.D. during the summer of 2017.
+        </p>
+        <p class="lead">
+          Joe proposed to Paige on August 2, 2016 while on vacation in Michigan's beautiful upper peninsula. 
+          They don't know what life has in store for them next, but they are very excited to face it together, 
+          surrounded by the love and support of their friends and families.</p>          
+        </p>
+
       </div>
     </div>
 
@@ -114,12 +120,19 @@
 
     <div id="details" class="row featurette">
       <div class="col-md-7 push-md-5">
-        <h2 class="featurette-heading">Wedding Details. <span class="text-muted">So you know where and when to be.</span></h2>
-        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo
-          cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <h2 class="featurette-heading">Wedding Details</h2>
+        <p class="lead"></p>
+        <ul>
+          <li>October 14, 2017</li>
+          <li>Time to be announced</li>
+          <li><a href="http://www.highlandparkcommunityhouse.org/" target="_blank">Highland Park Community House</a></li>
+          <li>1991 Sheridan Rd, Highland Park, IL 60035</li>
+          <li>Some parking at venue, for more parking information see <a href="http://www.cityhpil.com/index.aspx?NID=220" target="_blank">here</a></li>
+          <li>Semi-formal attire is preferred</li>
+        </ul>
       </div>
       <div class="col-md-5 pull-md-7">
-        <img class="featurette-image img-fluid m-x-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        <img class="featurette-image img-fluid m-x-auto" src="images/HPCH.jpg" alt="Highland Park Community House">
       </div>
     </div>
 
@@ -127,9 +140,8 @@
 
     <div id="accomodations" class="row featurette">
       <div class="col-md-7">
-        <h2 class="featurette-heading">Accomodations. <span class="text-muted">Sleep somewhere, not in a gutter please.</span></h2>
-        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo
-          cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <h2 class="featurette-heading">Accomodations</h2>
+        <p class="lead">Still in progress, we are looking into getting a hotel block and will update this section later!</p>
       </div>
       <div class="col-md-5">
         <img class="featurette-image img-fluid m-x-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
@@ -140,9 +152,8 @@
 
     <div id="registry" class="row featurette">
       <div class="col-md-7">
-        <h2 class="featurette-heading">Registry. <span class="text-muted">Buy us shit.</span></h2>
-        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo
-          cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <h2 class="featurette-heading">Registry</h2>
+        <p class="lead">We are registered at <a href="https://www.amazon.com/wedding/share/poe2017" target="_blank">Amazon.com</a></p>
       </div>
       <div class="col-md-5">
         <img class="featurette-image img-fluid m-x-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
@@ -157,7 +168,6 @@
     <!-- FOOTER -->
     <footer>
       <p class="pull-xs-right"><a href="#">Back to top</a></p>
-      <p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
     </footer>
 
   </div>
