@@ -1,1 +1,2 @@
-Our wedding website, made using Bootstrap 4
+Our wedding website, made using Bootstrap 4.  I figured it was pretty silly to have someone else make one when 
+it's pretty easy to throw one together myself.  Also Namecheap is pretty awesome, we got the domain name for 88 cents!
