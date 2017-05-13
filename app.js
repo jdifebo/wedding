@@ -1,7 +1,22 @@
 $('body').scrollspy({ target: '#navbar-example' })
 
+var urls;
+
+if (window.location.host === "poe2017.us") {
+    urls = {
+        getCode : code => "http://poe2017.us/api/code/" + code,
+        postResponse : "http://poe2017.us/api/code/"
+    }
+}
+else {
+    urls = {
+        getCode : code => "http://localhost:8080/code/" + code,
+        postResponse : "http://localhost:8081/code/"
+    }
+}
+
 $('#code-button').click(function() {
-    $.get("http://localhost:8081/code/" + document.getElementById("secret-code").value, function(data){
+    $.get(urls.getCode(document.getElementById("secret-code").value), function(data){
         guests = data;
         displayRsvpForm(guests);
     });
@@ -102,7 +117,7 @@ function submit(){
     console.log(JSON.stringify(payload));
     $.ajax({
         type: 'POST',
-        url: "http://localhost:8081/code/",
+        url: urls.postResponse,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         data: JSON.stringify(payload),
