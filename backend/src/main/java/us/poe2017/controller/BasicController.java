@@ -1,7 +1,7 @@
 package us.poe2017.controller;
 
-import club.mixr.dto.Group;
-import club.mixr.dto.Response;
+import us.poe2017.dto.Group;
+import us.poe2017.dto.Response;
 import us.poe2017.service.RsvpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
