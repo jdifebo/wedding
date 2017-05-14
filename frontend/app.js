@@ -4,8 +4,8 @@ var urls;
 
 if (window.location.host === "poe2017.us") {
     urls = {
-        getCode : code => "http://poe2017.us/api/code/" + code,
-        postResponse : "http://poe2017.us/api/code/"
+        getCode : code => "https://poe2017.us/api/code/" + code,
+        postResponse : "https://poe2017.us/api/code/"
     }
 }
 else {
