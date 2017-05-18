@@ -13,6 +13,9 @@ public class GuestEntity {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "name")
     private String name;
 
@@ -27,12 +30,20 @@ public class GuestEntity {
     private Boolean under21;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "name")
+    @JoinColumn(name = "guest")
     private List<GuestResponseEntity> responses;
 
 
     public GuestEntity() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

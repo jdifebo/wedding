@@ -19,7 +19,7 @@ public class GuestResponseEntity {
     private GroupResponseEntity groupResponse;
 
     @ManyToOne
-    @JoinColumn(name = "name")
+    @JoinColumn(name = "guest")
     private GuestEntity guest;
 
     @Column(name = "attending")

@@ -11,25 +11,38 @@ if (window.location.host === "poe2017.us") {
 else {
     urls = {
         getCode : code => "http://localhost:8080/code/" + code,
-        postResponse : "http://localhost:8081/code/"
+        postResponse : "http://localhost:8080/code/"
     }
 }
 
 $('#code-button').click(function() {
-    $.get(urls.getCode(document.getElementById("secret-code").value), function(data){
-        guests = data;
-        displayRsvpForm(guests);
+    displaySpinner();
+    $.ajax({
+        type: 'GET',
+        url: urls.getCode(document.getElementById("secret-code").value),
+    })
+    .done(function(data){
+        group = data;
+        displayRsvpForm(group);
+    })
+    .fail(function(){
+        var html = `
+          <div class="alert alert-danger" role="alert">
+            We couldn't find that code!
+          </div>
+        `
+        document.getElementById("rsvp-form").innerHTML = html;
     });
 });
 
-function displayRsvpForm(guests) {
-    function displaySingleGuest(name, index){
+function displayRsvpForm(group) {
+    function displaySingleGuest(guest, index){
         return `
           <div id="error` + index + `" class="alert alert-danger" role="alert" style="display: none;">
-            <strong>Oops!</strong> You must choose a response for each guest!.
+            <strong>Oops!</strong> You must choose a response for each guest!
           </div>
           <div id="dropdown-parent` + index + `" class="form-group">
-            <label for="guest` + index + `" class="form-control-label">` + name + `:</label>
+            <label for="guest` + index + `" class="form-control-label">` + guest.name + `:</label>
             <select class="form-control form-control-danger" id="guest` + index + `">
               <option></option>
               <option value="true">Accept</option>
@@ -40,8 +53,8 @@ function displayRsvpForm(guests) {
     }
 
     var html = `
-          <p class="lead">RSVP for: ` + guests.groupName + `</p>
-          ` + guests.names.map(displaySingleGuest).join("") + `
+          <p class="lead">RSVP for: ` + group.groupName + `</p>
+          ` + group.guests.map(displaySingleGuest).join("") + `
           <div id="email-error" class="alert alert-danger" role="alert" style="display: none;">
             <strong>Oh no!</strong> That email doesn't appear to be valid!.
           </div>
@@ -70,11 +83,11 @@ function displayRsvpForm(guests) {
     });
 }
 
-var guests = {}
+var group = {}
 
 function validate(){
     var valid = true;
-    for (var i = 0; i < guests.names.length; i++){
+    for (var i = 0; i < group.guests.length; i++){
         if (document.getElementById("guest" + i).value === ""){
             valid = false;
             document.getElementById("error" + i).style.display = "";
@@ -99,8 +112,8 @@ function validate(){
 function submit(){
     var attending = {};
 
-    for (var i = 0; i < guests.names.length; i++){
-        attending[guests.names[i]] = document.getElementById("guest" + i).value == "true";
+    for (var i = 0; i < group.guests.length; i++){
+        attending[group.guests[i].id] = document.getElementById("guest" + i).value == "true";
     }
 
     var email = document.getElementById("email").value;
@@ -108,28 +121,60 @@ function submit(){
     var comments = document.getElementById("comments").value;
 
     var payload = {
-        code : guests.code,
+        code : group.code,
         attending : attending,
         email : email,
         dietaryRestrictions : dietaryRestrictions,
         comments : comments
     };
     console.log(JSON.stringify(payload));
+    displaySpinner();
     $.ajax({
         type: 'POST',
         url: urls.postResponse,
         contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
         data: JSON.stringify(payload),
-        success: success
-    });
+    })
+    .done(success)
+    .fail(error);
 }
 
-function success() {
-    alert("Success!");
+function success(data, statusText, jqXHR) {
+    if (jqXHR.status == 200){
+        displayThankYou(group.groupName)
+    }
+    else if (jqXHR.status == 500) {
+        alert("Something went wrong!  The error message says " + data);
+    }
+    else {
+        alert("Something really mysterious happened! " + data + ", " + jqXHR.status);
+    }
 }
 
 
-function failure() {
-    alert("Failure!");
+function error(jqXHR, textStatus, errorThrown) {
+    alert(textStatus + " - " + errorThrown);
+}
+
+function displayThankYou(groupName) {
+    var html = `
+          <div class="alert alert-success" role="alert">
+            Thank you, ` + groupName + `!
+          </div>
+    `
+    document.getElementById("rsvp-form").innerHTML = html;
+
+}
+
+function displaySpinner() {
+    var html = `
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    `
+    document.getElementById("rsvp-form").innerHTML = html;
 }

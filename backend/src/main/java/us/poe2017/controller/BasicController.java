@@ -24,9 +24,8 @@ public class BasicController {
     }
 
     @RequestMapping(value = "/code/", method = RequestMethod.POST)
-    public String saveResponse(@RequestBody Response response) {
+    public void saveResponse(@RequestBody Response response) {
         rsvpService.saveResponse(response);
-        return "woohoo!";
     }
 
 

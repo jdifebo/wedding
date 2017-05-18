@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "group_response")
-public class GroupResponseEntity {
+public class GroupResponseEntity extends AuditingDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
