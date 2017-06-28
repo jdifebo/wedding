@@ -29,6 +29,9 @@ public class GuestEntity {
     @Column(name = "under_21")
     private Boolean under21;
 
+    @Column(name = "plus_one", nullable = false)
+    private boolean plusOne;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "guest")
     private List<GuestResponseEntity> responses;
@@ -76,5 +79,13 @@ public class GuestEntity {
 
     public void setUnder21(Boolean under21) {
         this.under21 = under21;
+    }
+
+    public boolean isPlusOne() {
+        return plusOne;
+    }
+
+    public void setPlusOne(boolean plusOne) {
+        this.plusOne = plusOne;
     }
 }

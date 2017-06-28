@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+
 @RestController
 public class BasicController {
 
@@ -14,8 +17,8 @@ public class BasicController {
     RsvpService rsvpService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String showIndex() {
-        return "The server is running!";
+    public void heartbeat(HttpServletRequest request) {
+
     }
 
     @RequestMapping(value = "/code/{code}", method = RequestMethod.GET)

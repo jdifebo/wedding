@@ -3,13 +3,17 @@ $('body').scrollspy({ target: '#navbar-example' })
 var urls;
 
 if (window.location.host === "poe2017.us") {
+    var baseUrl = "https://poe2017.us/api/";
     urls = {
+        heartbeat : baseUrl,
         getCode : code => "https://poe2017.us/api/code/" + code,
         postResponse : "https://poe2017.us/api/code/"
     }
 }
 else {
+    var baseUrl = "http://localhost:8080/";
     urls = {
+        heartbeat : baseUrl,
         getCode : code => "http://localhost:8080/code/" + code,
         postResponse : "http://localhost:8080/code/"
     }
@@ -37,19 +41,48 @@ $('#code-button').click(function() {
 
 function displayRsvpForm(group) {
     function displaySingleGuest(guest, index){
-        return `
-          <div id="error` + index + `" class="alert alert-danger" role="alert" style="display: none;">
-            <strong>Oops!</strong> You must choose a response for each guest!
-          </div>
-          <div id="dropdown-parent` + index + `" class="form-group">
-            <label for="guest` + index + `" class="form-control-label">` + guest.name + `:</label>
-            <select class="form-control form-control-danger" id="guest` + index + `">
-              <option></option>
-              <option value="true">Accept</option>
-              <option value="false">Decline</option>
-            </select>
-          </div>
-        `
+        var html = `
+                <div id="error` + index + `" class="alert alert-danger" role="alert" style="display: none;">
+                    <strong>Oops!</strong> You must choose a response for each guest!
+                </div>`
+        if (guest.plusOne) {
+            html += `
+                <div id="plusone-error` + index + `" class="alert alert-danger" role="alert" style="display: none;">
+                    <strong>Oh no!</strong> You must enter a name for a Plus One that is attending!
+                </div>
+                <div id="plusone-without-primary-error` + index + `" class="alert alert-danger" role="alert" style="display: none;">
+                    <strong>Oh no!</strong> You can't have a Plus One without the primary guest attending!
+                </div>
+                <div id="dropdown-parent` + index + `" class="form-group">
+                    <label for="guest` + index + `" class="form-control-label">Plus One:</label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="text" placeholder="Guest Name" class="form-control" id="plusonename` + index + `">
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control form-control-danger" id="guest` + index + `">
+                                <option></option>
+                                <option value="true">Accept</option>
+                                <option value="false">Decline</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                `
+        }
+        else {
+            html += `
+                <div id="dropdown-parent` + index + `" class="form-group">
+                    <label for="guest` + index + `" class="form-control-label">` + guest.name + `:</label>
+                    <select class="form-control form-control-danger" id="guest` + index + `">
+                    <option></option>
+                    <option value="true">Accept</option>
+                    <option value="false">Decline</option>
+                    </select>
+                </div>
+                `
+        }
+        return html;
     }
 
     var html = `
@@ -92,11 +125,35 @@ function validate(){
             valid = false;
             document.getElementById("error" + i).style.display = "";
             document.getElementById("dropdown-parent" + i).className = "form-group has-danger";
+            if (group.guests[i].plusOne) {
+                document.getElementById("plusone-error" + i).style.display = "none";
+                document.getElementById("plusone-without-primary-error" + i).style.display = "none";
+            }
+        }
+        // Deal with plus one validation -- a name is required iff dropdown chooses accept
+        else if (group.guests[i].plusOne && document.getElementById("plusonename" + i).value === "" && document.getElementById("guest" + i).value === "true"){
+            valid = false;
+            document.getElementById("error" + i).style.display = "none";
+            document.getElementById("plusone-error" + i).style.display = "";
+            document.getElementById("plusone-without-primary-error" + i).style.display = "none";
+            document.getElementById("dropdown-parent" + i).className = "form-group has-danger";
+        }        
+        else if (group.guests[i].plusOne && document.getElementById("guest" + i).value === "true" && document.getElementById("guest0").value === "false" ){
+            valid = false;
+            document.getElementById("error" + i).style.display = "none";
+            document.getElementById("plusone-error" + i).style.display = "none";
+            document.getElementById("plusone-without-primary-error" + i).style.display = "";
+            document.getElementById("dropdown-parent" + i).className = "form-group has-danger";
         }
         else {
-            document.getElementById("error" + i).style.display = "none";
             document.getElementById("dropdown-parent" + i).className = "form-group";
+            document.getElementById("error" + i).style.display = "none";
+            if (group.guests[i].plusOne) {
+                document.getElementById("plusone-error" + i).style.display = "none";
+                document.getElementById("plusone-without-primary-error" + i).style.display = "none";
+            }
         }
+
     }
     emailRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     if (document.getElementById("email").value !== "" && emailRegexp.test(document.getElementById("email").value) === false){
@@ -110,10 +167,17 @@ function validate(){
 }
 
 function submit(){
-    var attending = {};
+    var guestResponses = {};
 
     for (var i = 0; i < group.guests.length; i++){
-        attending[group.guests[i].id] = document.getElementById("guest" + i).value == "true";
+        var plusOneName;
+        if (group.guests[i].plusOne){
+            plusOneName = document.getElementById("plusonename" + i).value;
+        }
+        guestResponses[group.guests[i].id] = {
+            attending: document.getElementById("guest" + i).value == "true",
+            plusOneName: plusOneName
+        };
     }
 
     var email = document.getElementById("email").value;
@@ -122,7 +186,7 @@ function submit(){
 
     var payload = {
         code : group.code,
-        attending : attending,
+        guestResponses : guestResponses,
         email : email,
         dietaryRestrictions : dietaryRestrictions,
         comments : comments
@@ -144,16 +208,16 @@ function success(data, statusText, jqXHR) {
         displayThankYou(group.groupName)
     }
     else if (jqXHR.status == 500) {
-        alert("Something went wrong!  The error message says " + data);
+        alert("Something went wrong!  Call Paige or Joe and tell them that their website is broken!");
     }
     else {
-        alert("Something really mysterious happened! " + data + ", " + jqXHR.status);
+        alert("Something went wrong!  Call Paige or Joe and tell them that their website is broken!");
     }
 }
 
 
 function error(jqXHR, textStatus, errorThrown) {
-    alert(textStatus + " - " + errorThrown);
+    alert("Something went wrong!  Call Paige or Joe and tell them that their website is broken!");
 }
 
 function displayThankYou(groupName) {
@@ -178,3 +242,20 @@ function displaySpinner() {
     `
     document.getElementById("rsvp-form").innerHTML = html;
 }
+
+function pingServer() {
+    $.ajax({
+        type: 'GET',
+        url: urls.heartbeat,
+    })
+    .done(function(data){
+        $("#initial-spinner").hide();
+        $("#rsvp-section").show();
+    })
+    .fail(function(){
+        $("#initial-spinner").hide();
+        $("#server-error").show();
+    });
+}
+
+pingServer();

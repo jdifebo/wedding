@@ -8,9 +8,11 @@ package us.poe2017.dto
  */
 data class Group(val code: String, val groupName: String, val guests: List<Guest>)
 
-data class Guest(val id: Long, val name: String)
+data class Guest(val id: Long, val name: String?, val isPlusOne: Boolean)
 
 data class Response(val code: String="", val email: String="", val dietaryRestrictions: String="", val comments: String="",
-                val attending: Map<Long, Boolean> = hashMapOf())
+                val guestResponses: Map<Long, GuestResponse> = hashMapOf())
+
+data class GuestResponse(val attending: Boolean=false, val plusOneName: String?=null)
 
 data class Success(val success: Boolean)

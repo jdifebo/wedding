@@ -25,13 +25,17 @@ public class GuestResponseEntity {
     @Column(name = "attending")
     private Boolean attending;
 
+    @Column(name = "plus_one_name")
+    private String plusOneName;
+
     public GuestResponseEntity() {
 
     }
 
-    public GuestResponseEntity(GroupResponseEntity groupResponse, GuestEntity guest, Boolean attending) {
+    public GuestResponseEntity(GroupResponseEntity groupResponse, GuestEntity guest, Boolean attending, String plusOneName) {
         this.groupResponse = groupResponse;
         this.guest = guest;
         this.attending = attending;
+        this.plusOneName = plusOneName;
     }
 }
