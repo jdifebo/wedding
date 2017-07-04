@@ -28,6 +28,26 @@ $('#code-button').click(function() {
     .done(function(data){
         group = data;
         displayRsvpForm(group);
+        $("#guest0").change(function(){
+            if (document.getElementById("guest0").value === "false"){
+                for (var i = 1; i < group.guests.length; i++){
+                    if (group.guests[i].plusOne === true){
+                        document.getElementById("plusonename" + i).value = "";
+                        document.getElementById("guest" + i).value = "false";
+                        document.getElementById("plusonename" + i).disabled = true;
+                        document.getElementById("guest" + i).disabled = true;
+                    }
+                }
+            }
+            else if (document.getElementById("guest0").value === "true"){
+                for (var i = 1; i < group.guests.length; i++){
+                    if (group.guests[i].plusOne === true){
+                        document.getElementById("plusonename" + i).disabled = false;
+                        document.getElementById("guest" + i).disabled = false;
+                    }
+                }
+            }
+        })
     })
     .fail(function(){
         var html = `
@@ -48,13 +68,13 @@ function displayRsvpForm(group) {
         if (guest.plusOne) {
             html += `
                 <div id="plusone-error` + index + `" class="alert alert-danger" role="alert" style="display: none;">
-                    <strong>Oh no!</strong> You must enter a name for a Plus One that is attending!
+                    <strong>Oh no!</strong> You must enter a name for a guest that is attending!
                 </div>
                 <div id="plusone-without-primary-error` + index + `" class="alert alert-danger" role="alert" style="display: none;">
                     <strong>Oh no!</strong> You can't have a Plus One without the primary guest attending!
                 </div>
                 <div id="dropdown-parent` + index + `" class="form-group">
-                    <label for="guest` + index + `" class="form-control-label">Plus One:</label>
+                    <label for="guest` + index + `" class="form-control-label">Guest:</label>
                     <div class="row">
                         <div class="col-xs-6">
                             <input type="text" placeholder="Guest Name" class="form-control" id="plusonename` + index + `">
