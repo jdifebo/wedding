@@ -27,7 +27,7 @@ public class RsvpService {
 
 
     public Group findGroupByCode(String code) {
-        return groupRepository.findOne(code)
+        return groupRepository.findOne(code.toUpperCase())
                 .map(RsvpService::entityToDtoConverter)
                 .orElseThrow(() -> new RuntimeException("Secret code not found!"));
     }

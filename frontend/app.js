@@ -259,3 +259,8 @@ function pingServer() {
 }
 
 pingServer();
+
+$('#secret-code').keypress(function(e){
+    if(e.keyCode==13)
+    $('#code-button').click();
+});
