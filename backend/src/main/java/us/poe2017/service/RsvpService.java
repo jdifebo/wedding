@@ -40,6 +40,13 @@ public class RsvpService {
         return guests.stream().map(guest -> new Guest(guest.getId(), guest.getName(), guest.isPlusOne())).collect(Collectors.toList());
     }
 
+    private static List<CompletedGuestResponse> guestResponseEntityToDtoConverter(List<GuestResponseEntity> guestResponses){
+        return guestResponses
+                .stream()
+                .map(guestResponse -> new CompletedGuestResponse(guestResponse.getGuest().getName(), guestResponse.getAttending(), guestResponse.getPlusOneName()))
+                .collect(Collectors.toList());
+    }
+
     public void saveResponse(Response response) {
         GroupEntity group = groupRepository.findOne(response.getCode()).orElseThrow(() -> new RuntimeException("Invalid code, no group found!"));
         GroupResponseEntity groupResponseEntity = new GroupResponseEntity(group, response.getEmail(), response.getDietaryRestrictions(), response.getComments());
@@ -54,5 +61,17 @@ public class RsvpService {
             }
         }
         groupResponseRepository.save(groupResponseEntity);
+    }
+
+    public List<CompletedResponse> findResponses() {
+        return groupResponseRepository.findAll().map(g ->
+                new CompletedResponse(
+                        g.getGroup().getGroupName(),
+                        g.getEmail(),
+                        g.getDietaryRestrictions(),
+                        g.getComments(),
+                        guestResponseEntityToDtoConverter(g.getGuests())))
+                .collect(Collectors.toList());
+
     }
 }

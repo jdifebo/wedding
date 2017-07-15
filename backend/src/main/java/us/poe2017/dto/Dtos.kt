@@ -16,3 +16,8 @@ data class Response(val code: String="", val email: String="", val dietaryRestri
 data class GuestResponse(val attending: Boolean=false, val plusOneName: String?=null)
 
 data class Success(val success: Boolean)
+
+data class CompletedResponse(val groupName: String, val email: String, val dietaryRestrictions: String, val comments: String,
+                    val guestResponses: List<CompletedGuestResponse>)
+
+data class CompletedGuestResponse(val name: String, val attending: Boolean, val plusOneName: String?)

@@ -38,4 +38,24 @@ public class GuestResponseEntity {
         this.attending = attending;
         this.plusOneName = plusOneName;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public GroupResponseEntity getGroupResponse() {
+        return groupResponse;
+    }
+
+    public GuestEntity getGuest() {
+        return guest;
+    }
+
+    public Boolean getAttending() {
+        return attending;
+    }
+
+    public String getPlusOneName() {
+        return plusOneName;
+    }
 }

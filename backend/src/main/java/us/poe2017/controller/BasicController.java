@@ -1,5 +1,6 @@
 package us.poe2017.controller;
 
+import us.poe2017.dto.CompletedResponse;
 import us.poe2017.dto.Group;
 import us.poe2017.dto.Response;
 import us.poe2017.service.RsvpService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
+import java.util.List;
 
 @RestController
 public class BasicController {
@@ -24,6 +26,13 @@ public class BasicController {
     @RequestMapping(value = "/code/{code}", method = RequestMethod.GET)
     public Group getRsvpInfo(@PathVariable String code) {
         return rsvpService.findGroupByCode(code);
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "admin/responses", method = RequestMethod.GET)
+    public List<CompletedResponse> getResponses(){
+        return rsvpService.findResponses();
     }
 
     @RequestMapping(value = "/code/", method = RequestMethod.POST)
