@@ -23,6 +23,9 @@ public class GroupEntity{
     @JoinColumn(name = "group_code")
     private List<GuestEntity> guests;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_code")
+    private List<GroupResponseEntity> responses;
 
     public GroupEntity() {
 
@@ -50,5 +53,9 @@ public class GroupEntity{
 
     public void setGuests(List<GuestEntity> guests) {
         this.guests = guests;
+    }
+
+    public List<GroupResponseEntity> getResponses() {
+        return responses;
     }
 }

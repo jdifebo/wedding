@@ -88,4 +88,12 @@ public class GuestEntity {
     public void setPlusOne(boolean plusOne) {
         this.plusOne = plusOne;
     }
+
+    public List<GuestResponseEntity> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(List<GuestResponseEntity> responses) {
+        this.responses = responses;
+    }
 }

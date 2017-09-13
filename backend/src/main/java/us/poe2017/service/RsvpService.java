@@ -74,4 +74,31 @@ public class RsvpService {
                 .collect(Collectors.toList());
 
     }
+
+    /**
+     * lol java 8 -- this code is NSFW
+     */
+    public List<GroupAdmin> findGroupsForAdmin() {
+        return groupRepository.findAll().map(g ->
+                new GroupAdmin(
+                        g.getCode(),
+                        g.getGroupName(),
+                        g.getGuests()
+                                .stream()
+                                .map(guest -> new GuestAdmin(
+                                        guest.getName(),
+                                        guest.getKid(),
+                                        guest.getUnder21(),
+                                        guest.isPlusOne(),
+                                        guest.getResponses()
+                                            .stream()
+                                            .map(r -> new GuestResponseAdmin(r.getAttending(), r.getPlusOneName()))
+                                            .collect(Collectors.toList())))
+                                .collect(Collectors.toList()),
+                        g.getResponses()
+                                .stream()
+                                .map(r -> new GroupResponseAdmin(r.getEmail(), r.getDietaryRestrictions(), r.getComments()))
+                                .collect(Collectors.toList()))
+        ).collect(Collectors.toList());
+    }
 }

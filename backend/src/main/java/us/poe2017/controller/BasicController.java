@@ -1,8 +1,6 @@
 package us.poe2017.controller;
 
-import us.poe2017.dto.CompletedResponse;
-import us.poe2017.dto.Group;
-import us.poe2017.dto.Response;
+import us.poe2017.dto.*;
 import us.poe2017.service.RsvpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +31,12 @@ public class BasicController {
     @RequestMapping(value = "admin/responses", method = RequestMethod.GET)
     public List<CompletedResponse> getResponses(){
         return rsvpService.findResponses();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "admin/groups", method = RequestMethod.GET)
+    public List<GroupAdmin> findGroupsForAdmin(){
+        return rsvpService.findGroupsForAdmin();
     }
 
     @RequestMapping(value = "/code/", method = RequestMethod.POST)
